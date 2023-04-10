@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "@dqbd/tiktoken": "^1.0.3",
+    "youtube-browser-api": "^0.0.3"
+  }
+}
