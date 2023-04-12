@@ -9,7 +9,8 @@
 
   color-scheme: light dark;
   color: rgba(255, 255, 255, 0.87);
-  background-image: radial-gradient( circle 815px at 50% -20%,  rgba(9,29,85,1) 0.2%, rgb(1, 1, 21) 100.2% );
+  background-color: rgb(1, 1, 21);
+  background-image: radial-gradient( circle 815px at 50% -20%,  rgb(6, 8, 40) 0%, rgb(1, 1, 21) 100.2% );
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
@@ -102,7 +103,7 @@ position: absolute;
 left: 50%;
 top: 10px;
 transform: translateX(-50%);
-background-color: #000;
+background-color: #334155;
 color: #fff;
 white-space: nowrap;
 padding: 8px 12px;
@@ -120,7 +121,7 @@ margin-bottom: 200px;
   top: 100%;
   transform: translateX(-50%);
   border: 10px solid;
-  border-color: #000 #0000 #0000 #0000;
+  border-color: #334155 #0000 #0000 #0000;
 }
 
 #tooltip:hover #tooltipText {
@@ -134,8 +135,8 @@ opacity: 1;
   top: 50%;
   left: 43%;
   transform: translate(-50%, -50%);
-  border: 10px solid #353536; /* Light grey */
-  border-top: 10px solid #616161; /* Gray */
+  border: 10px solid #1e293b; 
+  border-top: 10px solid #475569;
   border-radius: 50%;
   width: 45px;
   height: 45px;
