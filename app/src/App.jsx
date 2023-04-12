@@ -5,6 +5,7 @@ import './App.css'
 import Api from 'youtube-browser-api'
 import assert from "node:assert";
 import { get_encoding, encoding_for_model } from "@dqbd/tiktoken";
+import 'typeface-poppins';
 
 function App() {
 
@@ -203,16 +204,13 @@ startButton.disabled = false; //Reenables the button
 }
 
   return (
-    <div className="App">
-      <h1>
+    <div className="App" class="font-sans">
+    <div class="w-full h- bg-white"> </div>
+      <h1 class="mb-4 font-extrabold text-5xl">Turbo<span class="bg-clip-text text-transparent bg-gradient-to-bl from-green-300 via-blue-400 to-blue-500">Transcript</span></h1>
+      <h3 class="font-inter text-xl">
 
-        <span class="headerpart1">Turbo</span><span class="headerpart2">Transcript</span>
-
-      </h1>
-      <h3>
-
-        Use the power of OpenAI's <a href="https://platform.openai.com/docs/models/gpt-3-5" class="text-terminal" target="_blank">gpt-turbo-3.5</a> model to
-        <br></br>summarize a YouTube video in only <em>ONE CLICK!</em>
+        Use the power of OpenAI's <a href="https://platform.openai.com/docs/models/gpt-3-5" class="font-mono hover:font-semibold hover:text-gray-400 underline" target="_blank">gpt-3.5-turbo</a> model to
+        <br></br>summarize a YouTube video in only <em class="font-bold">ONE CLICK!</em>
 
       </h3>
       <div>
@@ -224,11 +222,11 @@ startButton.disabled = false; //Reenables the button
 
           </span>
 
-        <textarea
+        <textarea class="font-mono rounded-md pl-2 bg-slate-800"
         onChange={(e) => {
           setUrl(e.target.value);
         }}
-        placeholder="Paste YouTube link"
+        placeholder="Paste YouTube URL"
         cols={50}
         rows={1}
         maxLength={43}
@@ -237,11 +235,9 @@ startButton.disabled = false; //Reenables the button
       </div>
       <div>
 
-        <button class="" id="startButton" onClick={start}>
-          Generate Summary
+        <button class="bg-slate-800" id="startButton" onClick={start}>
+          <span class="font-bold">Generate Summary</span>
         </button> 
-
-        <hr></hr>
 
         {running && !notFound ? //Shows the loading indicator when the api requests are loading, and hides once results are ready to display
         <div id="loadingIndicator">
@@ -265,6 +261,7 @@ startButton.disabled = false; //Reenables the button
         
 
         <div id="summaryList" hidden>
+        <hr></hr>
         <h4 id="title"></h4>
         <h5 id="channel"></h5>
         <hr></hr>
@@ -273,7 +270,6 @@ startButton.disabled = false; //Reenables the button
 
         
       </div>
-      
     </div>
   )
 }
