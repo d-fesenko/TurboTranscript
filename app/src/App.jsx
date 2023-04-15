@@ -8,8 +8,8 @@ import { GoAlert, GoIssueOpened, GoInfo } from "react-icons/go"
 function App() {
   const [invalidURL, setInvalidURL] = useState(false) //If the URL is invalid, this is set to true. For input validation
   const [invalidKey, setInvalidKey] = useState(false) //If the api key is invalid, this is set to true. For input validation
-  const [status, setStatus] = useState("")
-  const [errorType, setErrorType] = useState("")
+  const [status, setStatus] = useState("") //Status of the program. Can be "RUNNING", "ERROR", or "SUCCESS"
+  const [errorType, setErrorType] = useState("") //Type of error. Can be "INVALID_KEY" or "NOT_FOUND"
   const enc = encoding_for_model("gpt-3.5-turbo") //Encoder model for string tokenization
 
   const systemMessage = {
@@ -38,7 +38,7 @@ async function start() {
     setErrorType("")
     
   }
-  else {
+  else { //If the URL or API key is invalid, set the appropriate state variables
     setInvalidKey(!validKey)
     setInvalidURL(!validURL)
   }
@@ -61,7 +61,7 @@ function getID(url) { //Gets the ID of the video from the URL, for passing into 
   let videoTitle = document.getElementById("title")
   let videoChannel = document.getElementById("channel")
 
-    var API_KEY = import.meta.env.VITE_REACT_APP_YOUTUBE_API_KEY
+    var API_KEY = import.meta.env.VITE_REACT_APP_YOUTUBE_API_KEY //Environment variable for the YouTube API key
     let VIDEO_ID = getID(url)
 
     fetch(`https://www.googleapis.com/youtube/v3/videos?part=snippet&id=${VIDEO_ID}&key=${API_KEY}`)
@@ -99,6 +99,7 @@ fetch(fetchUrl)
       if (error.message === "Response status code is 500") {
         setStatus("ERROR")
         setErrorType("NOT_FOUND")
+        setInvalidURL(true)
       } else {
         setStatus("ERROR")
         setErrorType("INVALID_KEY")
@@ -121,7 +122,7 @@ async function callOpenAIAPI(transcript, apikey) { //Calls the OpenAI API to gen
 
   let tokenizedString = enc.encode(transcriptString)
 
-  if (tokenizedString.length > 2500) {
+  if (tokenizedString.length > 2500) { //2500 tokens per request leaves enough breathing room for response
 
     console.log("Video too long, splitting into multiple requests")
 
@@ -168,7 +169,7 @@ async function callOpenAIAPI(transcript, apikey) { //Calls the OpenAI API to gen
     const summary = currentResponse
     processSummary(summary)
 
-  } else {
+  } else { //If not over 2500 tokens, simply do one request
 
     const newMessage = {
       "role": "user",
@@ -255,7 +256,7 @@ function showInfoPopup() {
         
         <div class="flex items-center justify-center" style={{ height: '20px' }}>
           <input id="urlInput" class={`font-mono rounded-md pl-2 text-sm bg-slate-800 ${invalidURL ? 'border-2 border-red-500' : 'border-0'}`}
-        placeholder="Paste YouTube URL" //Make it so URL is updated only when start is clicked and not constantly
+        placeholder="Paste YouTube URL"
         size="52"
         maxLength="43"
       />
@@ -299,7 +300,7 @@ function showInfoPopup() {
       1. Create an OpenAI account <br/>
       2. Visit this url: <a href="https://platform.openai.com/account/api-keys" class="font-mono hover:font-semibold hover:text-blue-400 underline" target="_blank">https://beta.openai.com/account/api-keys</a><br/>
       3. Click "Create new secret key"<br/>
-      4. Paste it in the box above. Don't worry, this will not be stored anywhere<br/>
+      4. Paste it in the box above. Don't worry, this will not be stored anywhere<br/> 
       5. Enjoy!
     </p>
   </div>
