@@ -1,10 +1,7 @@
 import { useState } from 'react'
 import { useEffect } from 'react'
-import reactLogo from './assets/react.svg'
 import './App.css'
-import Api from 'youtube-browser-api'
-import assert from "node:assert"
-import { get_encoding, encoding_for_model } from "@dqbd/tiktoken"
+import { encoding_for_model } from "@dqbd/tiktoken"
 import 'typeface-poppins'
 import { GoAlert, GoIssueOpened, GoInfo } from "react-icons/go"
 
@@ -15,12 +12,6 @@ function App() {
   const [errorType, setErrorType] = useState("")
   const enc = encoding_for_model("gpt-3.5-turbo") //Encoder model for string tokenization
 
-  const summaryList = document.querySelector("#summaryList")
-  const startButton = document.querySelector("#startButton")
-  const errorIndicator = document.querySelector("#error")
-  const errorText = document.querySelector("#errorText")
-
-  const API_KEY = "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"
   const systemMessage = {
     role : "system",
     content : "You are a program that analyzes long form text and summarizes it effectively and concisely in a few sentences. Include all main points and as many details as possible."
@@ -41,8 +32,8 @@ async function start() {
     setInvalidURL(false)
     setInvalidKey(false)
     setStatus("RUNNING")
-    setErrorType("") //Reset error type
-    callYTAPI(url, apikey)
+    setErrorType("")
+    callYTAPI(url, apikey) //OpenAI key is passed in here, not the YouTube API key
     getTitleAndThumbnail(url)
     setErrorType("")
     
@@ -65,12 +56,12 @@ function getID(url) { //Gets the ID of the video from the URL, for passing into 
 }
 
   async function getTitleAndThumbnail(url) { 
-  let thumbnail = document.querySelector("#thumbnail")
-  let thumbnailLink = document.querySelector("#thumbnaillink")
-  let videoTitle = document.querySelector("#title")
-  let videoChannel = document.querySelector("#channel")
+  let thumbnail = document.getElementById("thumbnail")
+  let thumbnailLink = document.getElementById("thumbnaillink")
+  let videoTitle = document.getElementById("title")
+  let videoChannel = document.getElementById("channel")
 
-    var API_KEY = "AIzaSyA_KOQlLawDfQM-UzBA0qX1aYnidsbSmh0"
+    var API_KEY = import.meta.env.VITE_REACT_APP_YOUTUBE_API_KEY
     let VIDEO_ID = getID(url)
 
     fetch(`https://www.googleapis.com/youtube/v3/videos?part=snippet&id=${VIDEO_ID}&key=${API_KEY}`)
@@ -96,10 +87,10 @@ const fetchUrl = "https://youtube-browser-api.netlify.app/transcript?" + new URL
 fetch(fetchUrl)
 .then(res => {
   if (res.status === 500) {
-    return Promise.reject(new Error("Response status code is 500"));
+    return Promise.reject(new Error("Response status code is 500"))
   }
   else {
-  return res.json();
+  return res.json()
   }
 })
     .then (
@@ -114,7 +105,7 @@ fetch(fetchUrl)
         setInvalidKey(true)
       }
     }
-    );
+    )
   
 }
 
@@ -128,7 +119,7 @@ async function callOpenAIAPI(transcript, apikey) { //Calls the OpenAI API to gen
 
   console.log("Calling the OpenAI API...")
 
-  let tokenizedString = enc.encode(transcriptString);
+  let tokenizedString = enc.encode(transcriptString)
 
   if (tokenizedString.length > 2500) {
 
@@ -168,13 +159,13 @@ async function callOpenAIAPI(transcript, apikey) { //Calls the OpenAI API to gen
           "Authorization": "Bearer " + apikey
         },
         body: JSON.stringify(apiRequestBody)
-      });
+      })
 
       const data = await response.json()
-      currentResponse = data.choices[0].message.content.replace(/- /g, "");
+      currentResponse = data.choices[0].message.content.replace(/- /g, "")
     }
 
-    const summary = currentResponse;
+    const summary = currentResponse
     processSummary(summary)
 
   } else {
@@ -195,11 +186,11 @@ async function callOpenAIAPI(transcript, apikey) { //Calls the OpenAI API to gen
         "Authorization": "Bearer " + apikey
       },
       body: JSON.stringify(apiRequestBody)
-    });
+    })
 
     const data = await response.json()
-    const summary = data.choices[0].message.content.replace(/- /g, "");
-    processSummary(summary);
+    const summary = data.choices[0].message.content.replace(/- /g, "")
+    processSummary(summary)
 
   }
 }
@@ -207,7 +198,7 @@ async function callOpenAIAPI(transcript, apikey) { //Calls the OpenAI API to gen
 async function processSummary(unprocessedSummary) {
   console.log("Processing summary...")
   let fullText = unprocessedSummary
-  var splitText = fullText.split('. '); //Somehow make it so that it makes a new line at the end of every sentence, and not just every period.
+  var splitText = fullText.split('. ')
 
   let ul = document.querySelector('#ul')
 
@@ -228,7 +219,6 @@ async function processSummary(unprocessedSummary) {
     }
 })
 
-//setRunning(false); //After summary is processed, sets running to false which hides the loading animation and shows the summary
 setStatus("SUCCESS")
 
 }
@@ -298,7 +288,7 @@ function showInfoPopup() {
   )}
 
   <div id="apikeypopup" class="hidden absolute bg-slate-700 pb-4 pt-2 pr-9 rounded-lg opacity-100 transition-opacity duration-300 z-50"
-     style={{ top: 'calc(100% + 10px)', left: '50%', transform: 'translateX(-50%)', width: '500px'}}>
+     style={{ top: 'calc(100% + 10px)', left: '50%', transform: 'translateX(-50%)', width: '505px'}}>
     <h4 class="text-lg font-bold">What is this?</h4>
     <p class="text-xs text-left ml-10">
       <span class="text-center text-sm">
