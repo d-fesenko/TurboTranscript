@@ -125,16 +125,13 @@ margin-bottom: 200px;
 }
 
 #tooltip:hover #tooltipText {
-top: -145%;
+top: -50px;
 visibility: visible;
 opacity: 1;
 }
 
 .loader {
   position: relative;
-  top: 50%;
-  left: 43%;
-  transform: translate(-50%, -50%);
   border: 10px solid #1e293b; 
   border-top: 10px solid #475569;
   border-radius: 50%;
